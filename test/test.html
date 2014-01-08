@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+<head>
+  <title>Ceci Chat Window Tests</title>
+  <script src="../tools/iframe-utils.js"></script>
+  <link rel="import" href="../../appmaker/public/ceci/ceci-element.html">
+  <link rel="import" href="../../appmaker/public/ceci/ceci-element-base.html">
+  <link rel="import" href="../../appmaker/public/ceci/ceci-broadcast.html">
+  <link rel="import" href="../../appmaker/public/ceci/ceci-listen.html">
+  <!-- This is the component we're actually testing -->
+  <link rel="import" href="../component.html">
+  <script src="../../appmaker/public/vendor/polymer/polymer.min.js"></script>
+</head>
+<body>
+  <!-- The skeleton app we'll be using to test -->
+  <ceci-chat-window id="ceci-chat-window" username="Appmaker" room="Revelstoke"></ceci-chat-window>
+  <script>
+    iframeTestUtils(function () {
+      test('Sanity Check', function (done) {
+        var element = document.querySelector('ceci-chat-window');
+        chai.assert(element.$.messages, 'Chat Window recognized and exposed by Polymer.');
+        chai.assert(element.ceci.broadcasts, 'Ceci broadcasts publicized.');
+        chai.assert(element.ceci.listeners, 'Ceci listeners publicized.');
+        done();
+      });
+    });
+  </script>
+</body>
+</html>

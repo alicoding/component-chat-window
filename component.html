@@ -2,7 +2,7 @@
   <template>
     <link rel="stylesheet" href="component.css"></link>
     <header>
-      <h1>Chat Room<span class="room-name-wrapper">Room: <span class="room-name">{{room}}</span></span></h1>
+      <h1><span id="chatRoom"></span><span class="room-name-wrapper"><span id="roomName"></span> <span class="room-name">{{room}}</span></span></h1>
     </header>
     <ul id="messages"></ul>
     <shadow></shadow>
@@ -10,6 +10,7 @@
       {
         "tags": ["chat", "social"],
         "thumbnail": "./thumbnail.png",
+        "name": "Chat Window",
         "listeners": {
           "clear": {
             "description": "Clear all messages from the chat room",
@@ -40,8 +41,13 @@
   </template>
   <script>
     Polymer("ceci-chat-window", {
+      "chatRoom": "Chat Room",
+      "roomName": "Room:",
       ready: function() {
         this.super();
+
+        this.$.chatRoom.innerHTML = this.gettext("ceci-chat-window/chatRoom") || this.chatRoom;
+        this.$.roomName.innerHTML = this.gettext("ceci-chat-window/roomName") || this.roomName;
 
         if (!window.Firebase) {
           var script = document.createElement("script");
@@ -54,7 +60,7 @@
         this._connect();
       },
       usernameChanged: function(oldValue, newValue) {
-        this._sendmessage(oldValue + " is now known as " + newValue);
+        this._sendmessage(oldValue + " " + this.gettext("ceci-chat-window/is now known as") + " " + newValue);
       },
       roomChanged: function(oldValue, newValue) {
         this._connect();

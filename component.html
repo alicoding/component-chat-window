@@ -80,6 +80,10 @@
         if (!window.Firebase) {
           return;
         }
+        if(this.__prevQuery) {
+          this.__prevQuery.off("child_added");
+          this.__prevQuery.off("child_removed");
+        }
 
         var appId = "jbuck";
         var db = new Firebase("https://appmaker.firebaseio.com/" + appId + "/chat-window/" + this.getAttribute("room"));
@@ -95,6 +99,7 @@
         query.on("child_removed", function(snapshot) {
           document.getElementById("chat-message-" + snapshot.name().substr(1)).remove();
         }.bind(this));
+        this.__prevQuery = query;
       },
       _sendmessage: function(msg) {
         if (!window.Firebase) {

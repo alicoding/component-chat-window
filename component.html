@@ -1,4 +1,4 @@
-<polymer-element name="ceci-chat-window" attributes="username room" extends="ceci-element" username="Anonymous" room="Mozilla">
+<polymer-element name="ceci-chat-window-test" attributes="username room" extends="ceci-element" username="Anonymous" room="Mozilla">
   <template>
     <link rel="stylesheet" href="component.css"></link>
     <header>
@@ -54,8 +54,8 @@
       ready: function() {
         this.super();
 
-        this.$.chatRoom.innerHTML = this.gettext("ceci-chat-window/chatRoom") || this.chatRoom;
-        this.$.roomName.innerHTML = this.gettext("ceci-chat-window/roomName") || this.roomName;
+        this.$.chatRoom.innerHTML = this.gettext("ceci-chat-window-test/chatRoom") || this.chatRoom;
+        this.$.roomName.innerHTML = this.gettext("ceci-chat-window-test/roomName") || this.roomName;
 
         if (!window.Firebase) {
           var script = document.createElement("script");
@@ -68,7 +68,7 @@
         this._connect();
       },
       usernameChanged: function(oldValue, newValue) {
-        this._sendmessage(oldValue + " " + this.gettext("ceci-chat-window/is now known as") + " " + newValue);
+        this._sendmessage(oldValue + " " + this.gettext("ceci-chat-window-test/is now known as") + " " + newValue);
       },
       roomChanged: function(oldValue, newValue) {
         this._connect();

@@ -12,6 +12,13 @@
         "thumbnail": "./thumbnail.png",
         "description": "Start your own chat room.",
         "name": "Chat Window",
+        "messageposted": {
+          "click": {
+            "label": "Message posted",
+            "description": "Occurs when a message is posted in the chatroom.",
+            "default": true
+          }
+        },
         "listeners": {
           "clear": {
             "description": "Clear all messages from the chat room",
@@ -82,8 +89,8 @@
           var li = document.createElement("li");
           li.textContent = snapshot.val().message;
           li.setAttribute("id", "chat-message-" + snapshot.name().substr(1));
-
           this.$.messages.appendChild(li);
+          this.broadcast('messageposted', snapshot.val().message);
         }.bind(this));
         query.on("child_removed", function(snapshot) {
           document.getElementById("chat-message-" + snapshot.name().substr(1)).remove();

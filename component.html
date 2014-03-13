@@ -24,7 +24,7 @@
             "description": "Clear all messages from the chat room",
             "label": "Clear"
           },
-          "sendmessage": {
+          "sendMessage": {
             "default": true,
             "description": "Send a message to the chat room",
             "label": "Send message"
@@ -48,6 +48,8 @@
     </script>
   </template>
   <script>
+    var defaultAppID = 'appmaker';
+
     Polymer("ceci-chat-window", {
       "chatRoom": "Chat Room",
       "roomName": "Room:",
@@ -65,16 +67,22 @@
           return;
         }
 
+        this._db = null;
         this._connect();
       },
+      clear: function () {
+        while (this.$.messages.children.length) {
+          this.$.messages.removeChild(this.$.messages.firstChild);
+        }
+      },
       usernameChanged: function(oldValue, newValue) {
-        this._sendmessage(oldValue + " " + this.gettext("ceci-chat-window/is now known as") + " " + newValue);
+        this._sendMessage(oldValue + " " + this.gettext("ceci-chat-window/is now known as") + " " + newValue);
       },
       roomChanged: function(oldValue, newValue) {
         this._connect();
       },
-      sendmessage: function(event) {
-        this._sendmessage(this.getAttribute("username") + ": " + event);
+      sendMessage: function(event) {
+        this._sendMessage(this.username + ": " + event);
       },
       _connect: function() {
         if (!window.Firebase) {
@@ -85,10 +93,9 @@
           this.__prevQuery.off("child_removed");
         }
 
-        var appId = "jbuck";
-        var db = new Firebase("https://appmaker.firebaseio.com/" + appId + "/chat-window/" + this.getAttribute("room"));
+        this._db = new Firebase("https://appmaker.firebaseio.com/" + defaultAppID + "/chat-window/" + this.room);
 
-        var query = db.limit(20);
+        var query = this._db.limit(20);
         query.on("child_added", function(snapshot) {
           var li = document.createElement("li");
           li.textContent = snapshot.val().message;
@@ -97,19 +104,19 @@
           this.broadcast('messageposted', snapshot.val().message);
         }.bind(this));
         query.on("child_removed", function(snapshot) {
-          document.getElementById("chat-message-" + snapshot.name().substr(1)).remove();
+          var messageElement = document.getElementById("chat-message-" + snapshot.name().substr(1));
+          if (messageElement) {
+            messageElement.remove();
+          }
         }.bind(this));
         this.__prevQuery = query;
       },
-      _sendmessage: function(msg) {
+      _sendMessage: function(msg) {
         if (!window.Firebase) {
           return;
         }
 
-        var appId = "jbuck";
-        var db = new Firebase("https://appmaker.firebaseio.com/" + appId + "/chat-window/" + this.getAttribute("room"));
-
-        db.push({message: msg});
+        this._db.push({message: msg});
       }
     });
   </script>

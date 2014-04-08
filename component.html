@@ -71,18 +71,29 @@
         this._connect();
       },
       clear: function () {
-        while (this.$.messages.children.length) {
-          this.$.messages.removeChild(this.$.messages.firstChild);
-        }
+        this._clear();
       },
       usernameChanged: function(oldValue, newValue) {
-        this._sendMessage(oldValue + " " + this.gettext("ceci-chat-window/is now known as") + " " + newValue);
+        if (oldValue && oldValue != 'null'){
+          this._sendMessage(
+            oldValue + " " +
+            this.gettext("ceci-chat-window/is now known as") + " " +
+            newValue
+          );
+        }
       },
       roomChanged: function(oldValue, newValue) {
         this._connect();
       },
       sendMessage: function(event) {
         this._sendMessage(this.username + ": " + event);
+      },
+      _clear: function() {
+        if (!window.Firebase) {
+          return;
+        }
+
+        this._db.remove();
       },
       _connect: function() {
         if (!window.Firebase) {

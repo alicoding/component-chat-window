@@ -113,11 +113,13 @@
           li.setAttribute("id", "chat-message-" + snapshot.name().substr(1));
           this.$.messages.appendChild(li);
           this.broadcast('messageposted', snapshot.val().message);
+          this.$.messages.scrollTop = this.$.messages.scrollHeight;
         }.bind(this));
         query.on("child_removed", function(snapshot) {
           var messageElement = document.getElementById("chat-message-" + snapshot.name().substr(1));
           if (messageElement) {
             messageElement.remove();
+            this.$.messages.scrollTop = this.$.messages.scrollHeight;
           }
         }.bind(this));
         this.__prevQuery = query;

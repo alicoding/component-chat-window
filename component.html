@@ -1,4 +1,44 @@
 <polymer-element name="ceci-chat-window" attributes="username room" extends="ceci-element" username="Anonymous" room="Mozilla">
+  <ceci-definition>
+    {
+      "tags": ["chat", "social"],
+      "thumbnail": "./thumbnail.png",
+      "description": "Start your own chat room.",
+      "name": "Chat Window",
+      "broadcasts": {
+        "messageposted": {
+          "label": "Message posted",
+          "description": "Occurs when a message is posted in the chatroom.",
+          "default": "green"
+        }
+      },
+      "listeners": {
+        "clear": {
+          "description": "Clear all messages from the chat room",
+          "label": "Clear"
+        },
+        "sendMessage": {
+          "default": true,
+          "description": "Send a message to the chat room",
+          "label": "Send message"
+        }
+      },
+      "attributes": {
+        "username": {
+          "description": "A username to send messages as",
+          "editable": "text",
+          "label": "Username",
+          "listener": true
+        },
+        "room": {
+          "description": "A chat room to send messages to",
+          "editable": "text",
+          "label": "Room",
+          "listener": true
+        }
+      }
+    }
+  </ceci-definition>
   <template>
     <link rel="stylesheet" href="component.css"></link>
     <header>
@@ -6,46 +46,6 @@
     </header>
     <ul id="messages"></ul>
     <shadow></shadow>
-    <script type="text/json" id="ceci-definition">
-      {
-        "tags": ["chat", "social"],
-        "thumbnail": "./thumbnail.png",
-        "description": "Start your own chat room.",
-        "name": "Chat Window",
-        "broadcasts": {
-          "messageposted": {
-            "label": "Message posted",
-            "description": "Occurs when a message is posted in the chatroom.",
-            "default": "green"
-          }
-        },
-        "listeners": {
-          "clear": {
-            "description": "Clear all messages from the chat room",
-            "label": "Clear"
-          },
-          "sendMessage": {
-            "default": true,
-            "description": "Send a message to the chat room",
-            "label": "Send message"
-          }
-        },
-        "attributes": {
-          "username": {
-            "description": "A username to send messages as",
-            "editable": "text",
-            "label": "Username",
-            "listener": true
-          },
-          "room": {
-            "description": "A chat room to send messages to",
-            "editable": "text",
-            "label": "Room",
-            "listener": true
-          }
-        }
-      }
-    </script>
   </template>
   <script>
     var defaultAppID = 'appmaker';
